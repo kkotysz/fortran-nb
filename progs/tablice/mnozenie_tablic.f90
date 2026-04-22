@@ -1,30 +1,32 @@
-program mnozenie
-implicit none
+program mnozenie_tablic
+    use, intrinsic :: iso_fortran_env, only : dp => real64
+    implicit none
 
-real(kind=8), dimension(9) :: tablica1, tablica2
-integer(kind=8) :: i
+    integer, parameter :: n = 9
+    integer :: i
+    real(dp), dimension(n) :: tablica1
+    real(dp), dimension(n) :: tablica2
+    real(dp), dimension(n) :: iloczyn
 
-! tablica1 -> pierwiastek z indeksu: sqrt(indeks), indeks**(1/2)
+    ! Przyklad: dla kazdego i liczymy sqrt(i) na dwa sposoby.
+    do i = 1, n
+        tablica1(i) = sqrt(real(i, dp))        ! sqrt(i)
+        tablica2(i) = real(i, dp) ** 0.5_dp    ! i**(1/2)
+    end do
 
-do i=1_8,9_8
-    tablica1(i) = sqrt(float(i))  ! konwersja zmiennej do 'real' -> float(i)
-    tablica2(i) = i**(1./2)
-end do
+    ! Mnozenie tablic w Fortranie jest element-po-elemencie.
+    iloczyn = tablica1 * tablica2
 
-! tablica1(1)=sqrt(1.)
-! tablica1(2)=sqrt(2.)
+    write(*, '(a)') 'Porownanie wynikow dla i = 1..9'
+    write(*, '(a)') '-------------------------------------------------------'
+    write(*, '(a)') '     i      tablica1=sqrt(i)    tablica2=i**0.5     iloczyn'
+    write(*, '(a)') '-------------------------------------------------------'
 
-! .
-! .
-! .
+    do i = 1, n
+        write(*, '(i6, 3(2x, f14.6))') i, tablica1(i), tablica2(i), iloczyn(i)
+    end do
 
-! tablica(9)=sqrt(9)
+    write(*, '(a)') '-------------------------------------------------------'
+    write(*, '(a, f10.4)') 'Suma elementow iloczynu = ', sum(iloczyn)
 
-!print*,1./2
-write(*,*)"tablica1: ",tablica1
-write(*,*)"tablica2: ",tablica2
-
-print*,tablica1*tablica2
-
-
-end program mnozenie
+end program mnozenie_tablic
